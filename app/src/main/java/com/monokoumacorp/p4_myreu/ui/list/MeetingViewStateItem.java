@@ -14,9 +14,9 @@ public class MeetingViewStateItem {
     @NonNull
     private final String hour;
     @NonNull
-    private final List<String> participant;
+    private final String participant;
 
-    public MeetingViewStateItem(long id, @NonNull String name, @NonNull String localisation, @NonNull String hour, @NonNull List<String> participant) {
+    public MeetingViewStateItem(long id, @NonNull String name, @NonNull String localisation, @NonNull String hour, @NonNull String participant) {
         this.id = id;
         this.name = name;
         this.localisation = localisation;
@@ -44,7 +44,7 @@ public class MeetingViewStateItem {
     }
 
     @NonNull
-    public List<String> getParticipant() {
+    public String getParticipant() {
         return participant;
     }
 

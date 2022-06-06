@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.monokoumacorp.p4_myreu.BuildConfig;
 import com.monokoumacorp.p4_myreu.config.BuildConfigResolver;
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
+import com.monokoumacorp.p4_myreu.ui.add.CreateMeetingViewModel;
 import com.monokoumacorp.p4_myreu.ui.list.MeetingViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
@@ -42,6 +43,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MeetingViewModel.class)) {
             return (T) new MeetingViewModel(
+                meetingRepository
+            );
+        } else if (modelClass.isAssignableFrom(CreateMeetingViewModel.class)) {
+            return (T) new CreateMeetingViewModel(
                 meetingRepository
             );
         }

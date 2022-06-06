@@ -15,14 +15,14 @@ public class Meeting {
     @NonNull
     private final String hour;
     @NonNull
-    private final List<String> participant;
+    private final String participant;
 
     public Meeting(
         long id,
         @NonNull String name,
         @NonNull String localisation,
         @NonNull String hour,
-        @NonNull List<String> participant) {
+        @NonNull String participant) {
 
         this.id = id;
         this.name = name;
@@ -51,7 +51,7 @@ public class Meeting {
     }
 
     @NonNull
-    public List<String> getParticipant() {
+    public String getParticipant() {
         return participant;
     }
 

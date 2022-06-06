@@ -28,7 +28,7 @@ public class MeetingRepository {
                            @NonNull String name,
                            @NonNull String localisation,
                            @NonNull String hour,
-                           @NonNull List<String> participant) {
+                           @NonNull String participant) {
 
         List<Meeting> meetings = meetingsLiveData.getValue();
 
