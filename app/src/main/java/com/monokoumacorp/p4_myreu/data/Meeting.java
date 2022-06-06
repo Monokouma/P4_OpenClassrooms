@@ -13,8 +13,6 @@ public class Meeting {
     @NonNull
     private final String localisation;
     @NonNull
-    private final String subject;
-    @NonNull
     private final String hour;
     @NonNull
     private final List<String> participant;
@@ -23,14 +21,12 @@ public class Meeting {
         long id,
         @NonNull String name,
         @NonNull String localisation,
-        @NonNull String subject,
         @NonNull String hour,
         @NonNull List<String> participant) {
 
         this.id = id;
         this.name = name;
         this.localisation = localisation;
-        this.subject = subject;
         this.hour = hour;
         this.participant = participant;
     }
@@ -50,11 +46,6 @@ public class Meeting {
     }
 
     @NonNull
-    public String getSubject() {
-        return subject;
-    }
-
-    @NonNull
     public String getHour() {
         return hour;
     }
@@ -69,12 +60,12 @@ public class Meeting {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Meeting meeting = (Meeting) o;
-        return id == meeting.id && name.equals(meeting.name) && localisation.equals(meeting.localisation) && subject.equals(meeting.subject) && hour.equals(meeting.hour) && participant.equals(meeting.participant);
+        return id == meeting.id && name.equals(meeting.name) && localisation.equals(meeting.localisation) && hour.equals(meeting.hour) && participant.equals(meeting.participant);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, localisation, subject, hour, participant);
+        return Objects.hash(id, name, localisation, hour, participant);
     }
 
     @Override
@@ -83,7 +74,6 @@ public class Meeting {
             "id=" + id +
             ", name='" + name + '\'' +
             ", localisation='" + localisation + '\'' +
-            ", subject='" + subject + '\'' +
             ", hour='" + hour + '\'' +
             ", participant=" + participant +
             '}';

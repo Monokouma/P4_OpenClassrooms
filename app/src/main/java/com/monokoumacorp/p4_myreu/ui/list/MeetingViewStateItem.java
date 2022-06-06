@@ -12,17 +12,14 @@ public class MeetingViewStateItem {
     @NonNull
     private final String localisation;
     @NonNull
-    private final String subject;
-    @NonNull
     private final String hour;
     @NonNull
     private final List<String> participant;
 
-    public MeetingViewStateItem(long id, @NonNull String name, @NonNull String localisation, @NonNull String subject, @NonNull String hour, @NonNull List<String> participant) {
+    public MeetingViewStateItem(long id, @NonNull String name, @NonNull String localisation, @NonNull String hour, @NonNull List<String> participant) {
         this.id = id;
         this.name = name;
         this.localisation = localisation;
-        this.subject = subject;
         this.hour = hour;
         this.participant = participant;
     }
@@ -42,11 +39,6 @@ public class MeetingViewStateItem {
     }
 
     @NonNull
-    public String getSubject() {
-        return subject;
-    }
-
-    @NonNull
     public String getHour() {
         return hour;
     }
@@ -61,12 +53,12 @@ public class MeetingViewStateItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MeetingViewStateItem that = (MeetingViewStateItem) o;
-        return id == that.id && name.equals(that.name) && localisation.equals(that.localisation) && subject.equals(that.subject) && hour.equals(that.hour) && participant.equals(that.participant);
+        return id == that.id && name.equals(that.name) && localisation.equals(that.localisation) && hour.equals(that.hour) && participant.equals(that.participant);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, localisation, subject, hour, participant);
+        return Objects.hash(id, name, localisation, hour, participant);
     }
 
     @Override
@@ -75,7 +67,6 @@ public class MeetingViewStateItem {
             "id=" + id +
             ", name='" + name + '\'' +
             ", localisation='" + localisation + '\'' +
-            ", subject='" + subject + '\'' +
             ", hour='" + hour + '\'' +
             ", participant=" + participant +
             '}';
