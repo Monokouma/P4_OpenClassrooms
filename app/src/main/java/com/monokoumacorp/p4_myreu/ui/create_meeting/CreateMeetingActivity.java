@@ -36,13 +36,15 @@ public class CreateMeetingActivity extends AppCompatActivity {
         CreateMeetingViewModel viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(CreateMeetingViewModel.class);
 
         TextInputEditText meetingName = findViewById(R.id.add_meeting_name_textField);
-        TextInputEditText meetingLocalisation = findViewById(R.id.add_room_name_textField);
+        String meetingLocalisation = "Bruh";
         TextInputEditText participant = findViewById(R.id.add_participant_textField);
         TimePicker meetingHourTimePicker = findViewById(R.id.add_meeting_hour_timePicker);
         Button addMeetingButton = findViewById(R.id.add_meeting_button);
         meetingHourTimePicker.setIs24HourView(true);
         String meetingHour = String.valueOf(meetingHourTimePicker.getHour());
         String meetingMinute = String.valueOf(meetingHourTimePicker.getMinute());
+
+
 
         bindMeetingName(viewModel, meetingName);
         bindAddButton(viewModel, meetingName, participant, addMeetingButton, meetingLocalisation, meetingHour, meetingMinute);
@@ -81,13 +83,13 @@ public class CreateMeetingActivity extends AppCompatActivity {
                                TextInputEditText meetingName,
                                TextInputEditText participant,
                                Button addMeetingButton,
-                               TextInputEditText meetingLocalisation,
+                               String meetingLocalisation,
                                String meetingHour,
                                String meetingMinutes) {
         //noinspection ConstantConditions
 
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
-            meetingLabel = meetingName.getText().toString() + " - " + meetingHour + ":" + meetingMinutes + " - " + meetingLocalisation.getText().toString(),
+            meetingLabel = meetingName.getText().toString() + " - " + meetingHour + ":" + meetingMinutes + " - " + meetingLocalisation,
             participant.getText().toString()
         ));
         viewModel.getIsSaveButtonEnabledLiveData().observe(this, isSaveButtonEnabled -> addMeetingButton.setEnabled(isSaveButtonEnabled));
