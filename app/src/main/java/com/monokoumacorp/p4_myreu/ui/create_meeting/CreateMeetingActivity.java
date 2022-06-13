@@ -11,12 +11,17 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TimePicker;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.monokoumacorp.p4_myreu.R;
 import com.monokoumacorp.p4_myreu.ui.ViewModelFactory;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CreateMeetingActivity extends AppCompatActivity {
 
@@ -44,7 +49,8 @@ public class CreateMeetingActivity extends AppCompatActivity {
         String meetingHour = String.valueOf(meetingHourTimePicker.getHour());
         String meetingMinute = String.valueOf(meetingHourTimePicker.getMinute());
 
-
+        List<String> items = Arrays.asList("Salle 1", "Salle 2", "Salle 3");
+        Adapter adapter = new ArrayAdapter(this, R.layout.list_items, items);
 
         bindMeetingName(viewModel, meetingName);
         bindAddButton(viewModel, meetingName, participant, addMeetingButton, meetingLocalisation, meetingHour, meetingMinute);
