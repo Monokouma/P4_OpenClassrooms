@@ -21,13 +21,12 @@ public class MeetingRepository {
     public MeetingRepository(BuildConfigResolver buildConfigResolver) {
         if (buildConfigResolver.isDebug()) {
             Log.i("Monokouma", "Do a flipo");
+            Log.i("Monokouma", meetingsLiveData.toString());
         }
     }
 
     public void addMeeting(
                            @NonNull String name,
-                           @NonNull String localisation,
-                           @NonNull String hour,
                            @NonNull String participant) {
 
         List<Meeting> meetings = meetingsLiveData.getValue();
@@ -38,8 +37,6 @@ public class MeetingRepository {
             new Meeting(
                 maxId++,
                 name,
-                localisation,
-                hour,
                 participant
             )
         );

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity"
+    tools:context=".ui.list.MeetingActivity"
+    android:background="@color/black"
     >
 
     <com.google.android.material.appbar.AppBarLayout
@@ -12,25 +13,27 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:theme="@style/AppTheme.AppBarOverlay"
+
         >
-        <TextView
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/main_title_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="?actionBarSize"
-            android:padding="16dp"
-            android:text="Mes Réunions"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Mes réunions"
+            app:titleCentered="true"
+            app:menu="@menu/top_app_bar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="60dp"
         android:id="@+id/meeting_recyclerView"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        tools:listitem="@layout/meeting_itemview"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

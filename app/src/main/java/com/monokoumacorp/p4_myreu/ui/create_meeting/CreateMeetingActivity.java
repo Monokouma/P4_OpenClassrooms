@@ -1,4 +1,4 @@
-package com.monokoumacorp.p4_myreu.ui.add;
+package com.monokoumacorp.p4_myreu.ui.create_meeting;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +12,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,6 +19,8 @@ import com.monokoumacorp.p4_myreu.R;
 import com.monokoumacorp.p4_myreu.ui.ViewModelFactory;
 
 public class CreateMeetingActivity extends AppCompatActivity {
+
+    String meetingLabel;
 
     public static Intent navigate(Context context) {
         return new Intent(context, CreateMeetingActivity.class);
@@ -29,7 +30,7 @@ public class CreateMeetingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_metting);
+        setContentView(R.layout.create_metting_activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         CreateMeetingViewModel viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(CreateMeetingViewModel.class);
@@ -41,10 +42,10 @@ public class CreateMeetingActivity extends AppCompatActivity {
         Button addMeetingButton = findViewById(R.id.add_meeting_button);
         meetingHourTimePicker.setIs24HourView(true);
         String meetingHour = String.valueOf(meetingHourTimePicker.getHour());
-        int meetingMinute = meetingHourTimePicker.getMinute();
+        String meetingMinute = String.valueOf(meetingHourTimePicker.getMinute());
 
         bindMeetingName(viewModel, meetingName);
-        bindAddButton(viewModel, meetingName, meetingLocalisation, participant, meetingHour, addMeetingButton);
+        bindAddButton(viewModel, meetingName, participant, addMeetingButton, meetingLocalisation, meetingHour, meetingMinute);
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
     }
 
@@ -76,13 +77,18 @@ public class CreateMeetingActivity extends AppCompatActivity {
         });
     }
 
-    private void bindAddButton(CreateMeetingViewModel viewModel, TextInputEditText meetingName, TextInputEditText meetingLocalisation, TextInputEditText participant, String meetingHour, Button addMeetingButton) {
+    private void bindAddButton(CreateMeetingViewModel viewModel,
+                               TextInputEditText meetingName,
+                               TextInputEditText participant,
+                               Button addMeetingButton,
+                               TextInputEditText meetingLocalisation,
+                               String meetingHour,
+                               String meetingMinutes) {
         //noinspection ConstantConditions
+
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
-            meetingName.getText().toString(),
-            meetingLocalisation.getText().toString(),
-            participant.getText().toString(),
-            meetingHour.toString()
+            meetingLabel = meetingName.getText().toString() + " - " + meetingHour + ":" + meetingMinutes + " - " + meetingLocalisation.getText().toString(),
+            participant.getText().toString()
         ));
         viewModel.getIsSaveButtonEnabledLiveData().observe(this, isSaveButtonEnabled -> addMeetingButton.setEnabled(isSaveButtonEnabled));
     }

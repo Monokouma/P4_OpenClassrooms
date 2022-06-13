@@ -1,5 +1,7 @@
 package com.monokoumacorp.p4_myreu.ui.list;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import java.util.List;
@@ -10,17 +12,11 @@ public class MeetingViewStateItem {
     @NonNull
     private final String name;
     @NonNull
-    private final String localisation;
-    @NonNull
-    private final String hour;
-    @NonNull
     private final String participant;
 
-    public MeetingViewStateItem(long id, @NonNull String name, @NonNull String localisation, @NonNull String hour, @NonNull String participant) {
+    public MeetingViewStateItem(long id, @NonNull String name, @NonNull String participant) {
         this.id = id;
         this.name = name;
-        this.localisation = localisation;
-        this.hour = hour;
         this.participant = participant;
     }
 
@@ -30,17 +26,8 @@ public class MeetingViewStateItem {
 
     @NonNull
     public String getName() {
+        Log.i("Monokouma", name);
         return name;
-    }
-
-    @NonNull
-    public String getLocalisation() {
-        return localisation;
-    }
-
-    @NonNull
-    public String getHour() {
-        return hour;
     }
 
     @NonNull
@@ -53,12 +40,12 @@ public class MeetingViewStateItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MeetingViewStateItem that = (MeetingViewStateItem) o;
-        return id == that.id && name.equals(that.name) && localisation.equals(that.localisation) && hour.equals(that.hour) && participant.equals(that.participant);
+        return id == that.id && name.equals(that.name) && participant.equals(that.participant);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, localisation, hour, participant);
+        return Objects.hash(id, name, participant);
     }
 
     @Override
@@ -66,8 +53,6 @@ public class MeetingViewStateItem {
         return "MeetingViewStateItem{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", localisation='" + localisation + '\'' +
-            ", hour='" + hour + '\'' +
             ", participant=" + participant +
             '}';
     }

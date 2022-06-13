@@ -30,8 +30,6 @@ public class MeetingViewModel extends ViewModel {
                     new MeetingViewStateItem(
                         meeting.getId(),
                         meeting.getName(),
-                        meeting.getLocalisation(),
-                        meeting.getHour(),
                         meeting.getParticipant()
                     )
                 );

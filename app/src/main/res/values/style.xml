@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <style name="timePickerOrange">
+         <item name="android:textColorPrimary">@color/purple_200</item> <!-- color for digits -->
+         <item name="android:textColor">@color/purple_200</item> <!-- color for colon -->
+         <item name="android:colorControlNormal">@color/purple_200</item> <!-- color for (horizontal) delimeters -->
+        </style>
+</resources>

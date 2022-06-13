@@ -1,4 +1,4 @@
-package com.monokoumacorp.p4_myreu.ui;
+package com.monokoumacorp.p4_myreu.ui.list;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
@@ -10,19 +10,15 @@ import android.util.Log;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.monokoumacorp.p4_myreu.R;
-import com.monokoumacorp.p4_myreu.data.Meeting;
-import com.monokoumacorp.p4_myreu.ui.add.CreateMeetingActivity;
-import com.monokoumacorp.p4_myreu.ui.list.MeetingAdapter;
-import com.monokoumacorp.p4_myreu.ui.list.MeetingViewModel;
-import com.monokoumacorp.p4_myreu.ui.list.MeetingViewStateItem;
-import com.monokoumacorp.p4_myreu.ui.list.OnMeetingClickedListenner;
+import com.monokoumacorp.p4_myreu.ui.ViewModelFactory;
+import com.monokoumacorp.p4_myreu.ui.create_meeting.CreateMeetingActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MeetingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.meeting_activity);
 
         LifecycleOwner lifecycleOwner = this;
         FloatingActionButton fab = findViewById(R.id.fab_create_meeting);
@@ -33,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         MeetingAdapter adapter = new MeetingAdapter(new OnMeetingClickedListenner() {
             @Override
             public void onMeetingClicked(long meetingId) {
-
+                Log.i("Monokouma", "oui");
             }
 
             @Override
@@ -43,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        //Todo: redirect to meeting details
         fab.setOnClickListener(v -> startActivity(CreateMeetingActivity.navigate(this)));
         viewModel.getMeetingViewStateItemsLiveData().observe(lifecycleOwner, meetingViewStateItems ->
             adapter.submitList(meetingViewStateItems)

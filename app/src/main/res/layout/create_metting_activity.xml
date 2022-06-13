@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.add.CreateMeetingActivity">
+    tools:context=".ui.create_meeting.CreateMeetingActivity"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
         android:paddingTop="16dp"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp"
-        tools:context=".ui.add.AddNeighbourActivity">
+        tools:context=".ui.create_meeting.AddNeighbourActivity">
 
 
 
@@ -36,23 +37,7 @@
                  />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/add_room_name_til"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_name_til">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/add_room_name_textField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Salle"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_participant_til"
@@ -60,9 +45,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_room_name_til">
+            app:layout_constraintTop_toBottomOf="@id/add_meeting_name_til">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_participant_textField"
@@ -82,6 +68,7 @@
             app:layout_constraintTop_toBottomOf="@+id/add_participant_til"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:theme="@style/timePickerOrange"
             />
 
         <com.google.android.material.button.MaterialButton

@@ -4,10 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.monokoumacorp.p4_myreu.BuildConfig;
 import com.monokoumacorp.p4_myreu.config.BuildConfigResolver;
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
-import com.monokoumacorp.p4_myreu.ui.add.CreateMeetingViewModel;
+import com.monokoumacorp.p4_myreu.ui.create_meeting.CreateMeetingViewModel;
 import com.monokoumacorp.p4_myreu.ui.list.MeetingViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {

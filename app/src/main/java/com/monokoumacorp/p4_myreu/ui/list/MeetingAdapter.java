@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -27,32 +28,35 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.meeting_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.meeting_itemview, parent, false));
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull MeetingAdapter.ViewHolder holder, int position) {
-
+        holder.bind(getItem(position), listener);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView avatarImageView;
-      //  private final TextView nameTextView;
+        private final TextView nameTextView;
+        private final TextView participantsTextView;
         private final ImageView deleteImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             avatarImageView = itemView.findViewById(R.id.meeting_avatar);
-         //   nameTextView = itemView.findViewById(R.id);
+            nameTextView = itemView.findViewById(R.id.meeting_title);
+            participantsTextView = itemView.findViewById(R.id.meeting_email);
             deleteImageView = itemView.findViewById(R.id.meetings_item_iv_delete);
         }
 
         public void bind(MeetingViewStateItem item, OnMeetingClickedListenner listener) {
             itemView.setOnClickListener(v -> listener.onMeetingClicked(item.getId()));
-        //    nameTextView.setText(item.getName());
+            nameTextView.setText(item.getName());
+            participantsTextView.setText(item.getParticipant());
             deleteImageView.setOnClickListener(v -> listener.onDeleteMeetingClicked(item.getId()));
         }
     }

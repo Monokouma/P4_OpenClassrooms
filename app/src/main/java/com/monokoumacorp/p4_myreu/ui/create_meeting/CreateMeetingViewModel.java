@@ -1,4 +1,4 @@
-package com.monokoumacorp.p4_myreu.ui.add;
+package com.monokoumacorp.p4_myreu.ui.create_meeting;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,12 +39,10 @@ public class CreateMeetingViewModel extends ViewModel {
 
     public void onAddButtonClicked(
         @NonNull String name,
-        @Nullable String localisation,
-        @Nullable String hour,
         @Nullable String participant
     ) {
         // Add neighbour to the repository...
-        meetingRepository.addMeeting(name, localisation, hour, participant);
+        meetingRepository.addMeeting(name, participant);
         // ... and close the Activity !
         closeActivitySingleLiveEvent.call();
     }
