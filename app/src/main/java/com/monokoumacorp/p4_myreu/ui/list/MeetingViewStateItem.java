@@ -26,7 +26,6 @@ public class MeetingViewStateItem {
 
     @NonNull
     public String getName() {
-        Log.i("Monokouma", name);
         return name;
     }
 

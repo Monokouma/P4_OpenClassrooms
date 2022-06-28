@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.monokoumacorp.p4_myreu.config.BuildConfigResolver;
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
+import com.monokoumacorp.p4_myreu.data.RoomRepository;
 import com.monokoumacorp.p4_myreu.ui.create_meeting.CreateMeetingViewModel;
 import com.monokoumacorp.p4_myreu.ui.list.MeetingViewModel;
 
@@ -21,7 +22,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     factory = new ViewModelFactory(
                         new MeetingRepository(
                             new BuildConfigResolver()
-                        )
+                        ),
+                        new RoomRepository()
                     );
                 }
             }
@@ -32,8 +34,12 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final MeetingRepository meetingRepository;
 
-    private ViewModelFactory(@NonNull MeetingRepository meetingRepository) {
+    @NonNull
+    private final RoomRepository roomRepository;
+
+    private ViewModelFactory(@NonNull MeetingRepository meetingRepository, @NonNull RoomRepository roomRepository) {
         this.meetingRepository = meetingRepository;
+        this.roomRepository = roomRepository;
     }
 
     @SuppressWarnings("unchecked")
@@ -46,7 +52,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             );
         } else if (modelClass.isAssignableFrom(CreateMeetingViewModel.class)) {
             return (T) new CreateMeetingViewModel(
-                meetingRepository
+                meetingRepository,
+                roomRepository
             );
         }
         throw new IllegalArgumentException("Unknow ViewModel");

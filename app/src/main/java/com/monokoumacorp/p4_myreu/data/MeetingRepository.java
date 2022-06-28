@@ -20,8 +20,7 @@ public class MeetingRepository {
 
     public MeetingRepository(BuildConfigResolver buildConfigResolver) {
         if (buildConfigResolver.isDebug()) {
-            Log.i("Monokouma", "Do a flipo");
-            Log.i("Monokouma", meetingsLiveData.toString());
+
         }
     }
 

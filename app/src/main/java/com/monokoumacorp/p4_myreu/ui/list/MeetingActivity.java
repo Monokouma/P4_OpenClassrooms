@@ -29,7 +29,6 @@ public class MeetingActivity extends AppCompatActivity {
         MeetingAdapter adapter = new MeetingAdapter(new OnMeetingClickedListenner() {
             @Override
             public void onMeetingClicked(long meetingId) {
-                Log.i("Monokouma", "oui");
             }
 
             @Override
