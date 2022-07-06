@@ -4,12 +4,12 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
-public class CreateMeetingViewStateItem {
+public class CreateMeetingParticipantViewStateItem {
     private final long id;
     @NonNull
     private final String participantEmail;
 
-    public CreateMeetingViewStateItem(long id, @NonNull String participantEmail) {
+    public CreateMeetingParticipantViewStateItem(long id, @NonNull String participantEmail) {
         this.id = id;
         this.participantEmail = participantEmail;
     }
@@ -27,7 +27,7 @@ public class CreateMeetingViewStateItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CreateMeetingViewStateItem that = (CreateMeetingViewStateItem) o;
+        CreateMeetingParticipantViewStateItem that = (CreateMeetingParticipantViewStateItem) o;
         return id == that.id && participantEmail.equals(that.participantEmail);
     }
 

@@ -8,12 +8,12 @@ public class MeetingViewStateItem {
     private final long id;
     @NonNull
     private final String name;
-    private final String participantsLiveData;
+    private final String participants;
 
     public MeetingViewStateItem(long id, @NonNull String name, String participants) {
         this.id = id;
         this.name = name;
-        this.participantsLiveData = participants;
+        this.participants = participants;
     }
 
 
@@ -26,8 +26,8 @@ public class MeetingViewStateItem {
         return name;
     }
 
-    public String getParticipantsLiveData() {
-        return participantsLiveData;
+    public String getParticipants() {
+        return participants;
     }
 
     @Override
@@ -35,12 +35,12 @@ public class MeetingViewStateItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MeetingViewStateItem that = (MeetingViewStateItem) o;
-        return id == that.id && name.equals(that.name) && Objects.equals(participantsLiveData, that.participantsLiveData);
+        return id == that.id && name.equals(that.name) && Objects.equals(participants, that.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, participantsLiveData);
+        return Objects.hash(id, name, participants);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MeetingViewStateItem {
         return "MeetingViewStateItem{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", participantsLiveData=" + participantsLiveData +
+            ", participants=" + participants +
             '}';
     }
 }

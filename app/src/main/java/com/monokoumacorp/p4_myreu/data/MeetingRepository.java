@@ -1,13 +1,10 @@
 package com.monokoumacorp.p4_myreu.data;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.monokoumacorp.p4_myreu.config.BuildConfigResolver;
-import com.monokoumacorp.p4_myreu.ui.create_meeting.CreateMeetingViewStateItem;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,7 +24,7 @@ public class MeetingRepository {
 
     public void addMeeting(
         @NonNull String name,
-        @NonNull LiveData<List<Participant>> participants
+        @NonNull List<Participant> participants
     ) {
 
         List<Meeting> meetings = meetingsLiveData.getValue();

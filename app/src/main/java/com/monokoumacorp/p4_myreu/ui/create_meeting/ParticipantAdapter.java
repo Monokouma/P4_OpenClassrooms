@@ -11,29 +11,12 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.monokoumacorp.p4_myreu.R;
-import com.monokoumacorp.p4_myreu.ui.list.MeetingAdapter;
-import com.monokoumacorp.p4_myreu.ui.list.MeetingViewStateItem;
-import com.monokoumacorp.p4_myreu.ui.list.OnMeetingClickedListenner;
 
 
-public class ParticipantAdapter extends ListAdapter<CreateMeetingViewStateItem, ParticipantAdapter.ViewHolder> {
+public class ParticipantAdapter extends ListAdapter<CreateMeetingParticipantViewStateItem, ParticipantAdapter.ViewHolder> {
 
     public ParticipantAdapter() {
         super(new ParticipantItemCallback());
-
-
-    }
-
-    private static class ParticipantItemCallback extends DiffUtil.ItemCallback<CreateMeetingViewStateItem> {
-        @Override
-        public boolean areItemsTheSame(@NonNull CreateMeetingViewStateItem oldItem, @NonNull CreateMeetingViewStateItem newItem) {
-            return oldItem.getId() == newItem.getId();
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull CreateMeetingViewStateItem oldItem, @NonNull CreateMeetingViewStateItem newItem) {
-            return oldItem.equals(newItem);
-        }
     }
 
     @NonNull
@@ -49,20 +32,28 @@ public class ParticipantAdapter extends ListAdapter<CreateMeetingViewStateItem, 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-
         private final TextView participantEmail;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             participantEmail = itemView.findViewById(R.id.participant_itemView_email);
-
         }
 
-        public void bind(CreateMeetingViewStateItem item) {
+        public void bind(CreateMeetingParticipantViewStateItem item) {
             participantEmail.setText(item.getParticipantEmail() + "@lamzone.fr");
         }
     }
 
+    private static class ParticipantItemCallback extends DiffUtil.ItemCallback<CreateMeetingParticipantViewStateItem> {
+        @Override
+        public boolean areItemsTheSame(@NonNull CreateMeetingParticipantViewStateItem oldItem, @NonNull CreateMeetingParticipantViewStateItem newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull CreateMeetingParticipantViewStateItem oldItem, @NonNull CreateMeetingParticipantViewStateItem newItem) {
+            return oldItem.equals(newItem);
+        }
+    }
 }

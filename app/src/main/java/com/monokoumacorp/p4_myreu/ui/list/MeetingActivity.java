@@ -39,7 +39,6 @@ public class MeetingActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         fab.setOnClickListener(v -> startActivity(CreateMeetingActivity.navigate(this)));
-        viewModel.getMeetingViewStateItemsLiveData().observe(lifecycleOwner, adapter::submitList
-        );
+        viewModel.getMeetingViewStateItemsLiveData().observe(lifecycleOwner, adapter::submitList);
     }
 }

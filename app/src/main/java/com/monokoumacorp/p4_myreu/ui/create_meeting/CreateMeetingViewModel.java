@@ -5,17 +5,18 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
 import com.monokoumacorp.p4_myreu.data.Participant;
-import com.monokoumacorp.p4_myreu.data.ParticipantRepository;
-import com.monokoumacorp.p4_myreu.data.Room;
 import com.monokoumacorp.p4_myreu.data.RoomRepository;
 import com.monokoumacorp.p4_myreu.utils.SingleLiveEvent;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,24 +26,66 @@ public class CreateMeetingViewModel extends ViewModel {
     private final MeetingRepository meetingRepository;
 
     @NonNull
-    private final ParticipantRepository participantRepository;
-
-    @NonNull
     private final RoomRepository roomRepository;
 
     private final MutableLiveData<Boolean> isSaveButtonEnabledMutableLiveData = new MutableLiveData<>(false);
 
     private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
 
+    private final List<Participant> participants = new ArrayList<>();
+    private final MutableLiveData<List<Participant>> participantMutableLiveData = new MutableLiveData<>(participants);
+    private long maxId = 0;
 
-    public CreateMeetingViewModel(@NonNull MeetingRepository meetingRepository, @NonNull RoomRepository roomRepository, @NonNull ParticipantRepository participantRepository) {
+    private final MediatorLiveData<CreateMeetingViewState> createMeetingViewStateMediatorLiveData = new MediatorLiveData<>();
+
+    public CreateMeetingViewModel(
+            @NonNull MeetingRepository meetingRepository,
+            @NonNull RoomRepository roomRepository
+    ) {
         this.meetingRepository = meetingRepository;
         this.roomRepository = roomRepository;
-        this.participantRepository = participantRepository;
+
+        createMeetingViewStateMediatorLiveData.addSource(isSaveButtonEnabledMutableLiveData, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isSaveButtonEnabled) {
+                combine(isSaveButtonEnabled, participantMutableLiveData.getValue());
+            }
+        });
+
+        createMeetingViewStateMediatorLiveData.addSource(participantMutableLiveData, new Observer<List<Participant>>() {
+            @Override
+            public void onChanged(List<Participant> participants) {
+                combine(isSaveButtonEnabledMutableLiveData.getValue(), participants);
+            }
+        });
     }
 
-    public LiveData<Boolean> getIsSaveButtonEnabledLiveData() {
-        return isSaveButtonEnabledMutableLiveData;
+    private void combine(@Nullable Boolean isSaveButtonEnabled, @Nullable List<Participant> participants) {
+        if (isSaveButtonEnabled == null || participants == null) {
+            return;
+        }
+
+        List<CreateMeetingParticipantViewStateItem> participantViewStateItems = new ArrayList<>();
+
+        for (Participant participant : participants) {
+            participantViewStateItems.add(
+                    new CreateMeetingParticipantViewStateItem(
+                            participant.getId(),
+                            participant.getParticipantMailAdress()
+                    )
+            );
+        }
+
+        createMeetingViewStateMediatorLiveData.setValue(
+                new CreateMeetingViewState(
+                        isSaveButtonEnabled,
+                        participantViewStateItems
+                )
+        );
+    }
+
+    public LiveData<CreateMeetingViewState> getCreateMeetingViewStateLiveData() {
+        return createMeetingViewStateMediatorLiveData;
     }
 
     public SingleLiveEvent<Void> getCloseActivitySingleLiveEvent() {
@@ -50,7 +93,7 @@ public class CreateMeetingViewModel extends ViewModel {
     }
 
     public void onAddParticipantButtonClicked(String participantName) {
-        participantRepository.addParticipant(participantName);
+        addParticipant(participantName);
     }
 
     public void onNameChanged(String name) {
@@ -60,30 +103,21 @@ public class CreateMeetingViewModel extends ViewModel {
     public void onAddButtonClicked(
         @NonNull String name
     ) {
-        participantRepository.getParticipantsLiveData();
-        meetingRepository.addMeeting(name, participantRepository.getParticipantsLiveData());
+        meetingRepository.addMeeting(name, participants);
         Log.i("Monokouma", meetingRepository.getMeetingsLiveData().getValue().toString());
         closeActivitySingleLiveEvent.call();
     }
 
-    public LiveData<List<CreateMeetingViewStateItem>> getParticipantsViewStateItems() {
-        return Transformations.map(participantRepository.getParticipantsLiveData(), participants -> {
-            List<CreateMeetingViewStateItem> participantViewStateItems = new ArrayList<>();
+    private void addParticipant(@NonNull String participantEmail) {
+        List<Participant> participants = participantMutableLiveData.getValue();
+        if (participants == null) return;
 
-            for (Participant participant : participants) {
-                participantViewStateItems.add(
-                    new CreateMeetingViewStateItem(
-                        participant.getId(),
-                        participant.getParticipantMailAdress()
-                    )
-                );
-            }
-            return participantViewStateItems;
-        });
+        participants.add(
+                new Participant(
+                        maxId++,
+                        participantEmail
+                )
+        );
+        participantMutableLiveData.setValue(participants);
     }
-
-
-
-
-
 }

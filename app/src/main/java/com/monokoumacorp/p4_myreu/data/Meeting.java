@@ -1,12 +1,7 @@
 package com.monokoumacorp.p4_myreu.data;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 
-import com.monokoumacorp.p4_myreu.ui.create_meeting.CreateMeetingViewStateItem;
-
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +10,7 @@ public class Meeting {
     private final long id;
     @NonNull
     private final String name;
-    private final LiveData<List<Participant>> participants;
+    private final List<Participant> participants;
    // @NonNull
    // private final LocalDateTime startTime;
   //  @NonNull
@@ -25,12 +20,12 @@ public class Meeting {
     public Meeting(
         long id,
         @NonNull String name,
-        LiveData<List<Participant>> participant
+        List<Participant> participants
     ) {
 
         this.id = id;
         this.name = name;
-        this.participants = participant;
+        this.participants = participants;
     }
 
     public long getId() {
@@ -42,7 +37,7 @@ public class Meeting {
         return name;
     }
 
-    public LiveData<List<Participant>> getParticipants() {
+    public List<Participant> getParticipants() {
         return participants;
     }
 
@@ -64,7 +59,7 @@ public class Meeting {
         return "Meeting{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", participants=" + participants.getValue() +
+            ", participants=" + participants +
             '}';
     }
 }
