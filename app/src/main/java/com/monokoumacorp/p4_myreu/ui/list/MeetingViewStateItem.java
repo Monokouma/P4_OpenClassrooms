@@ -1,24 +1,21 @@
 package com.monokoumacorp.p4_myreu.ui.list;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
-import java.util.List;
 import java.util.Objects;
 
 public class MeetingViewStateItem {
     private final long id;
     @NonNull
     private final String name;
-    @NonNull
-    private final String participant;
+    private final String participantsLiveData;
 
-    public MeetingViewStateItem(long id, @NonNull String name, @NonNull String participant) {
+    public MeetingViewStateItem(long id, @NonNull String name, String participants) {
         this.id = id;
         this.name = name;
-        this.participant = participant;
+        this.participantsLiveData = participants;
     }
+
 
     public long getId() {
         return id;
@@ -29,9 +26,8 @@ public class MeetingViewStateItem {
         return name;
     }
 
-    @NonNull
-    public String getParticipant() {
-        return participant;
+    public String getParticipantsLiveData() {
+        return participantsLiveData;
     }
 
     @Override
@@ -39,12 +35,12 @@ public class MeetingViewStateItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MeetingViewStateItem that = (MeetingViewStateItem) o;
-        return id == that.id && name.equals(that.name) && participant.equals(that.participant);
+        return id == that.id && name.equals(that.name) && Objects.equals(participantsLiveData, that.participantsLiveData);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, participant);
+        return Objects.hash(id, name, participantsLiveData);
     }
 
     @Override
@@ -52,7 +48,7 @@ public class MeetingViewStateItem {
         return "MeetingViewStateItem{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", participant=" + participant +
+            ", participantsLiveData=" + participantsLiveData +
             '}';
     }
 }

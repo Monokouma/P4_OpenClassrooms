@@ -1,7 +1,12 @@
 package com.monokoumacorp.p4_myreu.data;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 
+import com.monokoumacorp.p4_myreu.ui.create_meeting.CreateMeetingViewStateItem;
+
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,17 +15,22 @@ public class Meeting {
     private final long id;
     @NonNull
     private final String name;
-    @NonNull
-    private final String participant;
+    private final LiveData<List<Participant>> participants;
+   // @NonNull
+   // private final LocalDateTime startTime;
+  //  @NonNull
+   // private final Period period;
+
 
     public Meeting(
         long id,
         @NonNull String name,
-        @NonNull String participant) {
+        LiveData<List<Participant>> participant
+    ) {
 
         this.id = id;
         this.name = name;
-        this.participant = participant;
+        this.participants = participant;
     }
 
     public long getId() {
@@ -32,9 +42,8 @@ public class Meeting {
         return name;
     }
 
-    @NonNull
-    public String getParticipant() {
-        return participant;
+    public LiveData<List<Participant>> getParticipants() {
+        return participants;
     }
 
     @Override
@@ -42,12 +51,12 @@ public class Meeting {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Meeting meeting = (Meeting) o;
-        return id == meeting.id && name.equals(meeting.name) && participant.equals(meeting.participant);
+        return id == meeting.id && name.equals(meeting.name) && Objects.equals(participants, meeting.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, participant);
+        return Objects.hash(id, name, participants);
     }
 
     @Override
@@ -55,7 +64,7 @@ public class Meeting {
         return "Meeting{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", participant=" + participant +
+            ", participants=" + participants.getValue() +
             '}';
     }
 }

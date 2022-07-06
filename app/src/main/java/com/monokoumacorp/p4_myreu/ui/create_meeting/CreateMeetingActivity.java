@@ -1,10 +1,5 @@
 package com.monokoumacorp.p4_myreu.ui.create_meeting;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -13,26 +8,33 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 import com.monokoumacorp.p4_myreu.R;
-import com.monokoumacorp.p4_myreu.data.Room;
-import com.monokoumacorp.p4_myreu.data.RoomRepository;
 import com.monokoumacorp.p4_myreu.ui.ViewModelFactory;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CreateMeetingActivity extends AppCompatActivity {
 
-    String meetingLabel;
-    AutoCompleteTextView room;
-    String roomName;
     LifecycleOwner lifecycleOwner = this;
+    List<CreateMeetingViewStateItem> createMeetingViewStateItemList;
 
     public static Intent navigate(Context context) {
         return new Intent(context, CreateMeetingActivity.class);
@@ -49,26 +51,39 @@ public class CreateMeetingActivity extends AppCompatActivity {
 
         TextInputEditText meetingName = findViewById(R.id.add_meeting_name_textField);
         TextInputEditText participant = findViewById(R.id.add_participant_textField);
-        TimePicker meetingHourTimePicker = findViewById(R.id.add_meeting_hour_timePicker);
         Button addMeetingButton = findViewById(R.id.add_meeting_button);
-        meetingHourTimePicker.setIs24HourView(true);
-        String meetingHour = String.valueOf(meetingHourTimePicker.getHour());
-        String meetingMinute = String.valueOf(meetingHourTimePicker.getMinute());
-        room = findViewById(R.id.salle);
-        List<Room> rooms =
-        Log.i("Monokouma", rooms.toString());
-        //Adapter belong to view
-       // ArrayAdapter<Room> adapter = new ArrayAdapter<>(this, R.layout.list_items, rooms);
-       // room.setAdapter(adapter);
+        FloatingActionButton addParticipant = findViewById(R.id.add_participant_button);
+        RecyclerView participantRecyclerView = findViewById(R.id.add_participant_list);
+        ParticipantAdapter participantAdapter = new ParticipantAdapter();
+        ImageButton addHourMetting = findViewById(R.id.add_meetingHour);
+        participantRecyclerView.setAdapter(participantAdapter);
+        MaterialTimePicker picker = new MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setTitleText("Choisissez une heure pour la réunion")
+                    .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
+                        .setPositiveButtonText("Choisir")
+                            .setNegativeButtonText("Annuler")
+                                .build();
 
 
+        addHourMetting.setOnClickListener(v -> {
+            picker.show(getSupportFragmentManager(), "timePicker");
+            picker.addOnPositiveButtonClickListener(view -> {
+                Log.i("Monokouma", String.valueOf(picker.getHour() + ":" + picker.getMinute()));
+                hideKeyboard(this, view);
+            });
+        });
 
+
+        viewModel.getParticipantsViewStateItems().observe(lifecycleOwner, participantViewStateItem ->
+            participantAdapter.submitList(participantViewStateItem)
+        );
         bindMeetingName(viewModel, meetingName);
-        bindAddButton(viewModel, meetingName, participant, addMeetingButton, room, meetingHour, meetingMinute);
+        bindParticipantButton(viewModel, addParticipant, participant);
+        bindAddButton(viewModel, meetingName, addMeetingButton);
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
 
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -77,6 +92,19 @@ public class CreateMeetingActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void bindParticipantButton(CreateMeetingViewModel viewModel, FloatingActionButton addParticipant, TextInputEditText participant) {
+
+        addParticipant.setOnClickListener(v -> {
+            if (!Objects.requireNonNull(participant.getText()).toString().equals("")) {
+                viewModel.onAddParticipantButtonClicked(participant.getText().toString());
+                participant.getText().clear();
+            } else {
+                participant.setError("Champ vide !");
+            }
+
+        });
     }
 
     private void bindMeetingName(CreateMeetingViewModel viewModel, TextInputEditText meetingName) {
@@ -98,24 +126,24 @@ public class CreateMeetingActivity extends AppCompatActivity {
         });
     }
 
-
-
     private void bindAddButton(CreateMeetingViewModel viewModel,
                                TextInputEditText meetingName,
-                               TextInputEditText participant,
-                               Button addMeetingButton,
-                               AutoCompleteTextView meetingLocalisation,
-                               String meetingHour,
-                               String meetingMinutes) {
+                               Button addMeetingButton
+                               ) {
+
         //noinspection ConstantConditions
 
-
-        addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
-
-            meetingLabel = meetingName.getText().toString() + " - " + meetingHour + ":" + meetingMinutes + " - " + meetingLocalisation.getText().toString(),
-            roomName = meetingLocalisation.getText().toString(),
-            participant.getText().toString()
-        ));
+        addMeetingButton.setOnClickListener(v ->
+                viewModel.onAddButtonClicked(
+                        meetingName.getText().toString()
+                )
+        );
         viewModel.getIsSaveButtonEnabledLiveData().observe(this, isSaveButtonEnabled -> addMeetingButton.setEnabled(isSaveButtonEnabled));
+
+    }
+
+    public void hideKeyboard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

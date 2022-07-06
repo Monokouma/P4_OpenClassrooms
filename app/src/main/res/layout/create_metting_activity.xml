@@ -11,24 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
-        tools:context=".ui.create_meeting.AddNeighbourActivity">
-
-
+        tools:context=".ui.create_meeting.CreateMeetingActivity"
+        >
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_meeting_name_til"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/room_dropdownMenu"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_meeting_name_textField"
@@ -44,15 +40,15 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_margin="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_meeting_name_til"
             app:layout_constraintBottom_toTopOf="@id/add_participant_til"
-            android:hint="Salle">
+            android:hint="@string/room_hint">
 
             <AutoCompleteTextView
-                android:id="@+id/salle"
+                android:id="@+id/room_autocompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
@@ -62,50 +58,85 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_participant_til"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_margin="16dp"
             android:backgroundTint="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/add_participant_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/room_dropdownMenu">
+            app:layout_constraintTop_toBottomOf="@id/room_dropdownMenu"
+            app:suffixText="@string/lamzone_fr"
+            android:textAlignment="center"
+            app:suffixTextColor="@color/black"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_participant_textField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Participant"
-                android:inputType="textMultiLine"
-                android:minLines="4" />
+                android:hint="Participants"
+                android:lines="1"
+                android:maxLines="1"
+                android:inputType="text"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
-        <TimePicker
-            android:id="@+id/add_meeting_hour_timePicker"
-            android:layout_width="0dp"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_participant_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:timePickerMode="spinner"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/add_participant_til"
+            android:layout_margin="16dp"
+            app:tint="@color/white"
+            android:backgroundTint="@color/purple_200"
+            android:src="@drawable/ic_baseline_person_add_24"
+            app:layout_constraintBottom_toTopOf="@id/add_participant_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/add_participant_til"
+            app:layout_constraintTop_toBottomOf="@id/room_dropdownMenu"
+            app:layout_constraintVertical_bias="0.0"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/add_participant_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:theme="@style/timePickerOrange"
+            app:layout_constraintTop_toBottomOf="@id/add_participant_button"
+            app:spanCount="2"
+            tools:listitem="@layout/participants_itemsview" />
+
+        <ImageButton
+            android:id="@+id/add_meetingHour"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_baseline_access_time_filled_24"
+            android:background="#00FFFFFF"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/add_participant_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/add_meeting_button"
+
             />
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_meeting_button"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_margin="16dp"
             android:enabled="false"
             android:text="Créer"
             app:cornerRadius="16dp"
+            app:layout_constraintTop_toBottomOf="@id/add_meetingHour"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_hour_timePicker" />
+            tools:layout_editor_absoluteY="757dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

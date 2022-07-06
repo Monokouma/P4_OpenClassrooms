@@ -7,11 +7,11 @@ import java.util.Objects;
 public class CreateMeetingViewStateItem {
     private final long id;
     @NonNull
-    private final String roomName;
+    private final String participantEmail;
 
-    public CreateMeetingViewStateItem(long id, @NonNull String roomName) {
+    public CreateMeetingViewStateItem(long id, @NonNull String participantEmail) {
         this.id = id;
-        this.roomName = roomName;
+        this.participantEmail = participantEmail;
     }
 
     public long getId() {
@@ -19,8 +19,8 @@ public class CreateMeetingViewStateItem {
     }
 
     @NonNull
-    public String getRoomName() {
-        return roomName;
+    public String getParticipantEmail() {
+        return participantEmail;
     }
 
     @Override
@@ -28,19 +28,19 @@ public class CreateMeetingViewStateItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CreateMeetingViewStateItem that = (CreateMeetingViewStateItem) o;
-        return id == that.id && roomName.equals(that.roomName);
+        return id == that.id && participantEmail.equals(that.participantEmail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, roomName);
+        return Objects.hash(id, participantEmail);
     }
 
     @Override
     public String toString() {
         return "CreateMeetingViewStateItem{" +
             "id=" + id +
-            ", roomName='" + roomName + '\'' +
+            ", participantEmail='" + participantEmail + '\'' +
             '}';
     }
 }

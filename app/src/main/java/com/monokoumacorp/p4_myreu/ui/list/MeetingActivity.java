@@ -32,15 +32,14 @@ public class MeetingActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onDeleteMeetingClicked(long meetingid) {
-                viewModel.onDeleteMeetingClicked(meetingid);
+            public void onDeleteMeetingClicked(long meetingId) {
+                viewModel.onDeleteMeetingClicked(meetingId);
             }
         });
         recyclerView.setAdapter(adapter);
 
         fab.setOnClickListener(v -> startActivity(CreateMeetingActivity.navigate(this)));
-        viewModel.getMeetingViewStateItemsLiveData().observe(lifecycleOwner, meetingViewStateItems ->
-            adapter.submitList(meetingViewStateItems)
-            );
+        viewModel.getMeetingViewStateItemsLiveData().observe(lifecycleOwner, adapter::submitList
+        );
     }
 }
