@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
         <style name="timePickerOrange">
-         <item name="android:textColorPrimary">@color/purple_200</item> <!-- color for digits -->
-         <item name="android:textColor">@color/purple_200</item> <!-- color for colon -->
-         <item name="android:colorControlNormal">@color/purple_200</item> <!-- color for (horizontal) delimeters -->
+         <item name="android:textColorPrimary">@color/smoky_black</item> <!-- color for digits -->
+         <item name="android:textColor">@color/smoky_black</item> <!-- color for colon -->
+         <item name="android:colorControlNormal">@color/smoky_black</item> <!-- color for (horizontal) delimeters -->
         </style>
+
 </resources>

@@ -5,31 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.create_meeting.CreateMeetingActivity"
+    android:background="@color/smoky_black"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        tools:context=".ui.create_meeting.CreateMeetingActivity"
         >
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_meeting_name_til"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:textColorHint="@color/white"
+            app:hintTextColor="@color/white"
             android:layout_margin="16dp"
+            app:boxStrokeColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/room_dropdownMenu"
             app:layout_constraintTop_toTopOf="parent"
+
             >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_meeting_name_textField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:hint="Nom de la réunion"
                  />
         </com.google.android.material.textfield.TextInputLayout>
@@ -37,20 +43,27 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/room_dropdownMenu"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
+            app:hintTextColor="@color/white"
             android:layout_margin="16dp"
+            app:boxStrokeColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_meeting_name_til"
             app:layout_constraintBottom_toTopOf="@id/add_participant_til"
-            android:hint="room_hint">
+            android:hint="Choisir une salle"
+            >
 
             <AutoCompleteTextView
                 android:id="@+id/room_autocompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:inputType="none"
                 />
 
@@ -58,17 +71,20 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_participant_til"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:backgroundTint="@color/white"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:textColorHint="@color/white"
+            app:hintTextColor="@color/white"
+            android:layout_margin="16dp"
+            app:boxStrokeColor="@color/white"
             app:layout_constraintEnd_toStartOf="@id/add_participant_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/room_dropdownMenu"
             app:suffixText="lamzone_fr"
             android:textAlignment="center"
-            app:suffixTextColor="@color/black"
+            app:suffixTextColor="@color/white"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -77,6 +93,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Participants"
                 android:lines="1"
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:maxLines="1"
                 android:inputType="text"
                 />
@@ -88,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:tint="@color/white"
-            android:backgroundTint="@color/purple_200"
+            app:backgroundTint="@color/carnation_pink"
             android:src="@drawable/ic_baseline_person_add_24"
             app:layout_constraintBottom_toTopOf="@id/add_participant_list"
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,30 +132,47 @@
             android:id="@+id/add_meetingHour"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/ic_baseline_access_time_filled_24"
+            android:layout_margin="8dp"
             android:background="#00FFFFFF"
-            android:layout_margin="16dp"
-            app:layout_constraintTop_toBottomOf="@id/add_participant_list"
+            android:src="@drawable/ic_baseline_access_time_filled_24"
+            app:layout_constraintBottom_toTopOf="@id/meetingTimeLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/add_meeting_button"
+            app:layout_constraintTop_toBottomOf="@id/add_participant_list"
+            app:tint="@color/carnation_pink"
+            />
 
+        <TextView
+            android:id="@+id/meetingTimeLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_margin="8dp"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@id/add_meetingHour"
+            app:layout_constraintBottom_toTopOf="@id/add_meeting_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="14:45"
+            android:visibility="gone"
             />
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_meeting_button"
-            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
+            android:textColor="@color/white"
+            android:backgroundTint="#7C809B"
             android:enabled="false"
             android:text="Créer"
             app:cornerRadius="16dp"
-            app:layout_constraintTop_toBottomOf="@id/add_meetingHour"
+            app:layout_constraintTop_toBottomOf="@id/meetingTimeLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="757dp" />
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

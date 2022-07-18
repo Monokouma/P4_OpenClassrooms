@@ -7,6 +7,7 @@
         android:icon="@drawable/ic_baseline_filter_list_24"
         android:contentDescription="filter"
         app:showAsAction="ifRoom"
+        android:iconTint="@color/carnation_pink"
         android:title="Filter" />
 
 </menu>

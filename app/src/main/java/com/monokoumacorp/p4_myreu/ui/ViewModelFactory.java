@@ -21,8 +21,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     factory = new ViewModelFactory(
                         new MeetingRepository(
                             new BuildConfigResolver()
-                        ),
-                        new RoomRepository()
+                        )
                     );
                 }
             }
@@ -33,12 +32,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final MeetingRepository meetingRepository;
 
-    @NonNull
-    private final RoomRepository roomRepository;
-
-    private ViewModelFactory(@NonNull MeetingRepository meetingRepository, @NonNull RoomRepository roomRepository) {
+    private ViewModelFactory(@NonNull MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
-        this.roomRepository = roomRepository;
     }
 
     @SuppressWarnings("unchecked")
@@ -49,8 +44,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new MeetingViewModel(meetingRepository);
         } else if (modelClass.isAssignableFrom(CreateMeetingViewModel.class)) {
             return (T) new CreateMeetingViewModel(
-                meetingRepository,
-                roomRepository
+                meetingRepository
             );
         }
         throw new IllegalArgumentException("Unknow ViewModel");

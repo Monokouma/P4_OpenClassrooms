@@ -8,15 +8,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
 import com.monokoumacorp.p4_myreu.data.Participant;
-import com.monokoumacorp.p4_myreu.data.RoomRepository;
 import com.monokoumacorp.p4_myreu.utils.SingleLiveEvent;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +23,6 @@ public class CreateMeetingViewModel extends ViewModel {
     @NonNull
     private final MeetingRepository meetingRepository;
 
-    @NonNull
-    private final RoomRepository roomRepository;
 
     private final MutableLiveData<Boolean> isSaveButtonEnabledMutableLiveData = new MutableLiveData<>(false);
 
@@ -38,12 +34,12 @@ public class CreateMeetingViewModel extends ViewModel {
 
     private final MediatorLiveData<CreateMeetingViewState> createMeetingViewStateMediatorLiveData = new MediatorLiveData<>();
 
+    private final String[] roomList = {"Paris", "New-York", "Tokyo", "Pékin", "Singapour", "Chicago", "Berlin", "Moscou", "Sydney", "Rio de Janeiro"};
+
     public CreateMeetingViewModel(
-            @NonNull MeetingRepository meetingRepository,
-            @NonNull RoomRepository roomRepository
+            @NonNull MeetingRepository meetingRepository
     ) {
         this.meetingRepository = meetingRepository;
-        this.roomRepository = roomRepository;
 
         createMeetingViewStateMediatorLiveData.addSource(isSaveButtonEnabledMutableLiveData, new Observer<Boolean>() {
             @Override
@@ -101,10 +97,12 @@ public class CreateMeetingViewModel extends ViewModel {
     }
 
     public void onAddButtonClicked(
-        @NonNull String name
+        @NonNull String name,
+        @NonNull LocalTime meetingHour,
+        @NonNull String roomName
     ) {
-        meetingRepository.addMeeting(name, participants);
-        Log.i("Monokouma", meetingRepository.getMeetingsLiveData().getValue().toString());
+        Log.i("MonokoumaVM", roomName);
+        meetingRepository.addMeeting(name, participants, meetingHour, roomName);
         closeActivitySingleLiveEvent.call();
     }
 
@@ -119,5 +117,9 @@ public class CreateMeetingViewModel extends ViewModel {
                 )
         );
         participantMutableLiveData.setValue(participants);
+    }
+
+    public String[] getRoomsList() {
+        return roomList;
     }
 }

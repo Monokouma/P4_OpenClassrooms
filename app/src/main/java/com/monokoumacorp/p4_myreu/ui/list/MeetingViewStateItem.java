@@ -10,12 +10,14 @@ public class MeetingViewStateItem {
     private final String name;
     private final String participants;
 
+
+
     public MeetingViewStateItem(long id, @NonNull String name, String participants) {
         this.id = id;
         this.name = name;
         this.participants = participants;
-    }
 
+    }
 
     public long getId() {
         return id;
@@ -29,6 +31,8 @@ public class MeetingViewStateItem {
     public String getParticipants() {
         return participants;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -48,7 +52,8 @@ public class MeetingViewStateItem {
         return "MeetingViewStateItem{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", participants=" + participants +
+            ", participants='" + participants + '\'' +
+
             '}';
     }
 }

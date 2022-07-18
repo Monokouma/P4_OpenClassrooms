@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.list.MeetingActivity"
-    android:background="@color/black"
+    android:background="@color/smoky_black"
     >
 
     <com.google.android.material.appbar.AppBarLayout
@@ -20,7 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Mes réunions"
+            app:titleTextColor="@color/white"
             app:titleCentered="true"
+            app:navigationIconTint="@color/white"
             app:menu="@menu/top_app_bar"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             />
@@ -44,7 +46,7 @@
         android:layout_margin="16dp"
         android:contentDescription="Créer une réunion"
         android:src="@drawable/ic_baseline_create_24"
-        app:backgroundTint="@color/purple_200"
-        app:tint="?attr/colorOnPrimary"
+        app:backgroundTint="@color/carnation_pink"
+        app:tint="@color/white"
         />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

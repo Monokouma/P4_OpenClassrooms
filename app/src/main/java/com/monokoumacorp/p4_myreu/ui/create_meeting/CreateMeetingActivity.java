@@ -2,18 +2,18 @@ package com.monokoumacorp.p4_myreu.ui.create_meeting;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,23 +21,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 import com.monokoumacorp.p4_myreu.R;
 import com.monokoumacorp.p4_myreu.ui.ViewModelFactory;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class CreateMeetingActivity extends AppCompatActivity {
 
     LifecycleOwner lifecycleOwner = this;
-    List<CreateMeetingParticipantViewStateItem> createMeetingViewStateItemList;
+    private static LocalTime meetingHour;
+    AutoCompleteTextView roomDropDownMenu;
 
     public static Intent navigate(Context context) {
         return new Intent(context, CreateMeetingActivity.class);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,14 @@ public class CreateMeetingActivity extends AppCompatActivity {
         ParticipantAdapter participantAdapter = new ParticipantAdapter();
         ImageButton addHourMetting = findViewById(R.id.add_meetingHour);
         participantRecyclerView.setAdapter(participantAdapter);
+        TextView meetingHourLabel = findViewById(R.id.meetingTimeLabel);
+
+        roomDropDownMenu = findViewById(R.id.room_autocompleteTextView);
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.list_items, viewModel.getRoomsList());
+        roomDropDownMenu.setAdapter(adapter);
+
+
+
         MaterialTimePicker picker = new MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setTitleText("Choisissez une heure pour la réunion")
@@ -62,17 +74,27 @@ public class CreateMeetingActivity extends AppCompatActivity {
             .setNegativeButtonText("Annuler")
             .build();
 
+
         addHourMetting.setOnClickListener(v -> {
             picker.show(getSupportFragmentManager(), "timePicker");
             picker.addOnPositiveButtonClickListener(view -> {
-                Log.i("Monokouma", String.valueOf(picker.getHour() + ":" + picker.getMinute()));
+
+                LocalTime localTime = LocalTime.of(picker.getHour(), picker.getMinute());
+                long epochSecond = ZonedDateTime.of(LocalDate.now(), localTime, ZoneId.of("UTC")).toEpochSecond();
+                StringBuilder stringBuilder = new StringBuilder();
+                meetingHourLabel.setVisibility(View.VISIBLE);
+                meetingHourLabel.setText(stringBuilder.append("Heure de la réunion, ").append(localTime));
+                meetingHour = localTime;
                 hideKeyboard(this, view);
             });
         });
 
 
+
+
         viewModel.getCreateMeetingViewStateLiveData().observe(lifecycleOwner, createMeetingViewState -> {
             addMeetingButton.setEnabled(createMeetingViewState.isSaveButtonEnabled());
+            if (addMeetingButton.isEnabled()) {addMeetingButton.setBackgroundColor(getResources().getColor(R.color.tufts_blue));}
             participantAdapter.submitList(createMeetingViewState.getParticipants());
         });
 
@@ -80,11 +102,12 @@ public class CreateMeetingActivity extends AppCompatActivity {
         bindParticipantButton(viewModel, addParticipant, participant);
         addMeetingButton.setOnClickListener(v ->
             viewModel.onAddButtonClicked(
-                meetingName.getText().toString()
+                meetingName.getText().toString(),
+                meetingHour,
+                roomDropDownMenu.getText().toString()
             )
         );
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
-
     }
 
     @Override

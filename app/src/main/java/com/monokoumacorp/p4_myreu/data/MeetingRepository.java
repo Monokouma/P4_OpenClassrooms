@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.monokoumacorp.p4_myreu.config.BuildConfigResolver;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +25,9 @@ public class MeetingRepository {
 
     public void addMeeting(
         @NonNull String name,
-        @NonNull List<Participant> participants
+        @NonNull List<Participant> participants,
+        @NonNull LocalTime meetingHour,
+        @NonNull String roomName
     ) {
 
         List<Meeting> meetings = meetingsLiveData.getValue();
@@ -35,7 +38,9 @@ public class MeetingRepository {
             new Meeting(
                 maxId++,
                 name,
-                participants
+                participants,
+                meetingHour,
+                roomName
             )
         );
         meetingsLiveData.setValue(meetings);

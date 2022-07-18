@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.monokoumacorp.p4_myreu.data.Meeting;
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
-import com.monokoumacorp.p4_myreu.ui.create_meeting.CreateMeetingParticipantViewStateItem;
+import com.monokoumacorp.p4_myreu.data.Participant;
+import com.monokoumacorp.p4_myreu.data.Room;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MeetingViewModel extends ViewModel {
@@ -22,6 +22,9 @@ public class MeetingViewModel extends ViewModel {
     private final MeetingRepository meetingRepository;
 
     private final MediatorLiveData<List<MeetingViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
+
+
+
 
     public MeetingViewModel(@NonNull MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
@@ -42,11 +45,26 @@ public class MeetingViewModel extends ViewModel {
         List<MeetingViewStateItem> meetingViewStateItems = new ArrayList<>();
 
         for (Meeting meeting : meetings) {
+            StringBuilder participantsStringBuilder = new StringBuilder();
+            StringBuilder meetingStringBuilder = new StringBuilder();
+
+            String meetingInfos = meetingStringBuilder.append(meeting.getName()).append(" - ").append(meeting.getMeetingHour()).append(" - ").append(meeting.getRoomName()).toString();
+
+            List<Participant> participants = meeting.getParticipants();
+            for (int i = 0, participantsSize = participants.size(); i < participantsSize; i++) {
+                Participant participant = participants.get(i);
+                participantsStringBuilder.append(participant.getParticipantMailAdress());
+                participantsStringBuilder.append("@lamzone.fr");
+                if (i < participantsSize - 1) {
+                    participantsStringBuilder.append(", ");
+                }
+
+            }
             meetingViewStateItems.add(
                 new MeetingViewStateItem(
                     meeting.getId(),
-                    meeting.getName(),
-                    Arrays.toString(meeting.getParticipants().toArray())
+                    meetingInfos,
+                    participantsStringBuilder.toString()
                 )
             );
         }
@@ -61,4 +79,5 @@ public class MeetingViewModel extends ViewModel {
     public void onDeleteMeetingClicked(long meetingId) {
         meetingRepository.deleteMeeting(meetingId);
     }
+
 }
