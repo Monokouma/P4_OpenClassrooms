@@ -1,8 +1,6 @@
 package com.monokoumacorp.p4_myreu.ui.create_meeting;
 
 import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.monokoumacorp.p4_myreu.MyReuApplication;
 import com.monokoumacorp.p4_myreu.R;
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
 import com.monokoumacorp.p4_myreu.data.Participant;
@@ -29,7 +26,6 @@ public class CreateMeetingViewModel extends ViewModel {
     @NonNull
     private final MeetingRepository meetingRepository;
 
-
     private final MutableLiveData<Boolean> isSaveButtonEnabledMutableLiveData = new MutableLiveData<>(false);
 
     private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
@@ -45,13 +41,11 @@ public class CreateMeetingViewModel extends ViewModel {
     private static final String[] ROOMS_LIST = {"Paris", "New-York", "Tokyo", "Pékin", "Singapour", "Chicago", "Berlin", "Moscou", "Sydney", "Rio de Janeiro"};
 
     public CreateMeetingViewModel(
-            @NonNull Application application,
-            @NonNull MeetingRepository meetingRepository
-
+        @NonNull Application application,
+        @NonNull MeetingRepository meetingRepository
     ) {
         this.application = application;
         this.meetingRepository = meetingRepository;
-
 
         createMeetingViewStateMediatorLiveData.addSource(isSaveButtonEnabledMutableLiveData, new Observer<Boolean>() {
             @Override
@@ -77,19 +71,19 @@ public class CreateMeetingViewModel extends ViewModel {
 
         for (Participant participant : participants) {
             participantViewStateItems.add(
-                    new CreateMeetingParticipantViewStateItem(
-                            participant.getId(),
-                            participant.getParticipantMailAdress()
-                    )
+                new CreateMeetingParticipantViewStateItem(
+                    participant.getId(),
+                    participant.getParticipantMailAddress()
+                )
             );
         }
 
         createMeetingViewStateMediatorLiveData.setValue(
-                new CreateMeetingViewState(
-                        isSaveButtonEnabled,
-                        participantViewStateItems,
-                        ROOMS_LIST
-                )
+            new CreateMeetingViewState(
+                isSaveButtonEnabled,
+                participantViewStateItems,
+                ROOMS_LIST
+            )
         );
     }
 
@@ -109,8 +103,6 @@ public class CreateMeetingViewModel extends ViewModel {
         addParticipant(participantName);
     }
 
-
-
     public void onNameChanged(String name) {
         isSaveButtonEnabledMutableLiveData.setValue(!name.isEmpty());
     }
@@ -125,7 +117,6 @@ public class CreateMeetingViewModel extends ViewModel {
         } else {
             toastMessageSingleLiveEvent.setValue(application.getString(R.string.create_meeting_error_message));
         }
-
     }
 
     private void addParticipant(@NonNull String participantEmail) {
@@ -133,10 +124,10 @@ public class CreateMeetingViewModel extends ViewModel {
         if (participants == null) return;
 
         participants.add(
-                new Participant(
-                        maxId++,
-                        participantEmail
-                )
+            new Participant(
+                maxId++,
+                participantEmail
+            )
         );
         participantMutableLiveData.setValue(participants);
     }

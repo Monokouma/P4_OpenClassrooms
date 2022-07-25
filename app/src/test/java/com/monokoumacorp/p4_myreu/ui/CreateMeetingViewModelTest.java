@@ -1,21 +1,18 @@
 package com.monokoumacorp.p4_myreu.ui;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 import android.app.Application;
-import android.content.res.Resources;
 
-import androidx.annotation.NonNull;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import com.monokoumacorp.p4_myreu.R;
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
+import com.monokoumacorp.p4_myreu.data.Participant;
 import com.monokoumacorp.p4_myreu.ui.create_meeting.CreateMeetingViewModel;
-import com.monokoumacorp.p4_myreu.ui.create_meeting.CreateMeetingViewState;
 import com.monokoumacorp.p4_myreu.utils.LiveDataTestUtils;
 
 import org.junit.Before;
@@ -25,64 +22,80 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateMeetingViewModelTest {
 
-    private static final String EXPECTED_TOPIC_USER_INPUT_ERROR = "EXPECTED_TOPIC_USER_INPUT_ERROR";
-    private static final String EXPECTED_PARTICIPANTS_USER_INPUT_ERROR = "EXPECTED_PARTICIPANTS_USER_INPUT_ERROR";
-    private static final String EXPECTED_ROOM_USER_INPUT_ERROR = "EXPECTED_ROOM_USER_INPUT_ERROR";
-
-    private static final String EXPECTED_TIME = "13:00";
+    private static final String NAME = "NAME";
+    private static final LocalTime MEETING_HOUR = LocalTime.of(12, 50);
+    private static final String ROOM_NAME = "ROOM_NAME";
+    private static final String PARTICIPANT_MAIL_ADDRESS = "PARTICIPANT_MAIL_ADDRESS";
+    private static final List<Participant> PARTICIPANTS = getDefaultParticipants();
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Mock
-    private MeetingRepository repository;
+    private Application application;
 
-    private Clock clock;
+    @Mock
+    private MeetingRepository repository;
 
     private CreateMeetingViewModel viewModel;
 
     @Before
     public void setUp() {
-        // Useful for unit testing with time
-        clock = getDefaultClock(getDefaultLocalDate(), getDefaultLocalTime());
+        given(repository.addMeeting(eq(NAME), eq(PARTICIPANTS), eq(MEETING_HOUR), eq(ROOM_NAME))).willReturn(true);
+        given(application.getString(R.string.create_meeting_error_message)).willReturn("create_meeting_error_message");
 
-        viewModel = new CreateMeetingViewModel(new Application(), repository);
+        viewModel = new CreateMeetingViewModel(application, repository);
     }
 
-    @NonNull
-    private LocalTime getDefaultLocalTime() {
-        return LocalTime.of(12, 50);
+    @Test
+    public void onAddButtonClicked_nominal_case() throws InterruptedException {
+        // GIVEN
+        viewModel.onAddParticipantButtonClicked(PARTICIPANTS.get(0).getParticipantMailAddress());
+        viewModel.onAddParticipantButtonClicked(PARTICIPANTS.get(1).getParticipantMailAddress());
+        viewModel.onAddParticipantButtonClicked(PARTICIPANTS.get(2).getParticipantMailAddress());
+
+        // WHEN
+        viewModel.onAddButtonClicked(NAME, MEETING_HOUR, ROOM_NAME);
+        String toastMessageResult = LiveDataTestUtils.getValueForTesting(viewModel.getToastMessageSingleLiveEvent());
+        Void aVoid = LiveDataTestUtils.getOrAwaitValue(viewModel.getCloseActivitySingleLiveEvent());
+
+        // THEN
+        assertNull(toastMessageResult);
+        assertNull(aVoid);
     }
 
-    @NonNull
-    private LocalDate getDefaultLocalDate() {
-        return LocalDate.of(1991, 2, 26);
+    @Test
+    public void onAddButtonClicked_error() {
+        // GIVEN
+        given(repository.addMeeting(eq(NAME), eq(PARTICIPANTS), eq(MEETING_HOUR), eq(ROOM_NAME))).willReturn(false);
+
+        // WHEN
+        viewModel.onAddButtonClicked(NAME, MEETING_HOUR, ROOM_NAME);
+        String result = LiveDataTestUtils.getValueForTesting(viewModel.getToastMessageSingleLiveEvent());
+
+        // THEN
+        assertEquals("create_meeting_error_message", result);
     }
 
-    @NonNull
-    private Clock getDefaultClock(LocalDate localDate, LocalTime localTime) {
-        return Clock.fixed(
-            LocalDateTime
-                .of(
-                    localDate,
-                    localTime
+    private static List<Participant> getDefaultParticipants() {
+        List<Participant> participantList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            participantList.add(
+                new Participant(
+                    i,
+                    PARTICIPANT_MAIL_ADDRESS + i
                 )
-                .toInstant(ZoneOffset.UTC),
-            ZoneOffset.UTC
-        );
+            );
+        }
+
+        return participantList;
     }
-
-
-
 }

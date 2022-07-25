@@ -7,11 +7,11 @@ import java.util.Objects;
 public class Participant {
     private final long id;
     @NonNull
-    private final String participantMailAdress;
+    private final String participantMailAddress;
 
-    public Participant(long id, @NonNull String participantMailAdress) {
+    public Participant(long id, @NonNull String participantMailAddress) {
         this.id = id;
-        this.participantMailAdress = participantMailAdress;
+        this.participantMailAddress = participantMailAddress;
     }
 
     public long getId() {
@@ -19,8 +19,8 @@ public class Participant {
     }
 
     @NonNull
-    public String getParticipantMailAdress() {
-        return participantMailAdress;
+    public String getParticipantMailAddress() {
+        return participantMailAddress;
     }
 
     @Override
@@ -28,19 +28,19 @@ public class Participant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Participant that = (Participant) o;
-        return id == that.id && participantMailAdress.equals(that.participantMailAdress);
+        return id == that.id && participantMailAddress.equals(that.participantMailAddress);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, participantMailAdress);
+        return Objects.hash(id, participantMailAddress);
     }
 
     @Override
     public String toString() {
         return "Participant{" +
             "id=" + id +
-            ", participantMailAdress='" + participantMailAdress + '\'' +
+            ", participantMailAddress='" + participantMailAddress + '\'' +
             '}';
     }
 }
