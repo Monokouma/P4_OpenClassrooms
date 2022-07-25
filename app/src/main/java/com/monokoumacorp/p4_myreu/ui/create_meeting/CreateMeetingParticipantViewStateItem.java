@@ -9,9 +9,12 @@ public class CreateMeetingParticipantViewStateItem {
     @NonNull
     private final String participantEmail;
 
+
+
     public CreateMeetingParticipantViewStateItem(long id, @NonNull String participantEmail) {
         this.id = id;
         this.participantEmail = participantEmail;
+
     }
 
     public long getId() {

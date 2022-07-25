@@ -5,13 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.monokoumacorp.p4_myreu.data.Meeting;
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
 import com.monokoumacorp.p4_myreu.data.Participant;
-import com.monokoumacorp.p4_myreu.data.Room;
 
 import java.util.ArrayList;
 import java.util.List;

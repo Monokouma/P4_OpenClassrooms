@@ -1,6 +1,8 @@
 package com.monokoumacorp.p4_myreu.ui.create_meeting;
 
+import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,6 +12,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.monokoumacorp.p4_myreu.MyReuApplication;
+import com.monokoumacorp.p4_myreu.R;
 import com.monokoumacorp.p4_myreu.data.MeetingRepository;
 import com.monokoumacorp.p4_myreu.data.Participant;
 import com.monokoumacorp.p4_myreu.utils.SingleLiveEvent;
@@ -21,6 +25,8 @@ import java.util.List;
 public class CreateMeetingViewModel extends ViewModel {
 
     @NonNull
+    private final Application application;
+    @NonNull
     private final MeetingRepository meetingRepository;
 
 
@@ -28,18 +34,24 @@ public class CreateMeetingViewModel extends ViewModel {
 
     private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
 
+    private final SingleLiveEvent<String> toastMessageSingleLiveEvent = new SingleLiveEvent<>();
+
     private final List<Participant> participants = new ArrayList<>();
     private final MutableLiveData<List<Participant>> participantMutableLiveData = new MutableLiveData<>(participants);
     private long maxId = 0;
 
     private final MediatorLiveData<CreateMeetingViewState> createMeetingViewStateMediatorLiveData = new MediatorLiveData<>();
 
-    private final String[] roomList = {"Paris", "New-York", "Tokyo", "Pékin", "Singapour", "Chicago", "Berlin", "Moscou", "Sydney", "Rio de Janeiro"};
+    private static final String[] ROOMS_LIST = {"Paris", "New-York", "Tokyo", "Pékin", "Singapour", "Chicago", "Berlin", "Moscou", "Sydney", "Rio de Janeiro"};
 
     public CreateMeetingViewModel(
+            @NonNull Application application,
             @NonNull MeetingRepository meetingRepository
+
     ) {
+        this.application = application;
         this.meetingRepository = meetingRepository;
+
 
         createMeetingViewStateMediatorLiveData.addSource(isSaveButtonEnabledMutableLiveData, new Observer<Boolean>() {
             @Override
@@ -75,7 +87,8 @@ public class CreateMeetingViewModel extends ViewModel {
         createMeetingViewStateMediatorLiveData.setValue(
                 new CreateMeetingViewState(
                         isSaveButtonEnabled,
-                        participantViewStateItems
+                        participantViewStateItems,
+                        ROOMS_LIST
                 )
         );
     }
@@ -88,9 +101,15 @@ public class CreateMeetingViewModel extends ViewModel {
         return closeActivitySingleLiveEvent;
     }
 
+    public SingleLiveEvent<String> getToastMessageSingleLiveEvent() {
+        return toastMessageSingleLiveEvent;
+    }
+
     public void onAddParticipantButtonClicked(String participantName) {
         addParticipant(participantName);
     }
+
+
 
     public void onNameChanged(String name) {
         isSaveButtonEnabledMutableLiveData.setValue(!name.isEmpty());
@@ -101,9 +120,12 @@ public class CreateMeetingViewModel extends ViewModel {
         @NonNull LocalTime meetingHour,
         @NonNull String roomName
     ) {
-        Log.i("MonokoumaVM", roomName);
-        meetingRepository.addMeeting(name, participants, meetingHour, roomName);
-        closeActivitySingleLiveEvent.call();
+        if (meetingRepository.addMeeting(name, participants, meetingHour, roomName)) {
+            closeActivitySingleLiveEvent.call();
+        } else {
+            toastMessageSingleLiveEvent.setValue(application.getString(R.string.create_meeting_error_message));
+        }
+
     }
 
     private void addParticipant(@NonNull String participantEmail) {
@@ -119,7 +141,4 @@ public class CreateMeetingViewModel extends ViewModel {
         participantMutableLiveData.setValue(participants);
     }
 
-    public String[] getRoomsList() {
-        return roomList;
-    }
 }

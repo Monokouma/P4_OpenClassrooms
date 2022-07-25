@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
@@ -61,7 +62,8 @@ public class CreateMeetingActivity extends AppCompatActivity {
         TextView meetingHourLabel = findViewById(R.id.meetingTimeLabel);
 
         roomDropDownMenu = findViewById(R.id.room_autocompleteTextView);
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.list_items, viewModel.getRoomsList());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_items);
         roomDropDownMenu.setAdapter(adapter);
 
 
@@ -96,6 +98,8 @@ public class CreateMeetingActivity extends AppCompatActivity {
             addMeetingButton.setEnabled(createMeetingViewState.isSaveButtonEnabled());
             if (addMeetingButton.isEnabled()) {addMeetingButton.setBackgroundColor(getResources().getColor(R.color.tufts_blue));}
             participantAdapter.submitList(createMeetingViewState.getParticipants());
+            adapter.clear();
+            adapter.addAll(createMeetingViewState.getRoomList());
         });
 
         bindMeetingName(viewModel, meetingName);
@@ -108,6 +112,7 @@ public class CreateMeetingActivity extends AppCompatActivity {
             )
         );
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
+        viewModel.getToastMessageSingleLiveEvent().observe(this, message -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
     }
 
     @Override

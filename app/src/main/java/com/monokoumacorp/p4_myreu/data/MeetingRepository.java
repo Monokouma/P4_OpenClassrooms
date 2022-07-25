@@ -17,13 +17,11 @@ public class MeetingRepository {
 
     private long maxId = 0;
 
-    public MeetingRepository(BuildConfigResolver buildConfigResolver) {
-        if (buildConfigResolver.isDebug()) {
+    public MeetingRepository() {
 
-        }
     }
 
-    public void addMeeting(
+    public boolean addMeeting(
         @NonNull String name,
         @NonNull List<Participant> participants,
         @NonNull LocalTime meetingHour,
@@ -32,7 +30,17 @@ public class MeetingRepository {
 
         List<Meeting> meetings = meetingsLiveData.getValue();
 
-        if (meetings == null) return;
+        if (meetings == null) return false;
+
+
+        for (Meeting meeting : meetings) {
+            if (meeting.getRoomName().equals(roomName)
+                && ((!meetingHour.isAfter(meeting.getMeetingHour().plusHours(1))
+                || !meetingHour.isBefore(meeting.getMeetingHour().minusHours(1))
+            ))) {
+                return false;
+            }
+        }
 
         meetings.add(
             new Meeting(
@@ -43,7 +51,9 @@ public class MeetingRepository {
                 roomName
             )
         );
+
         meetingsLiveData.setValue(meetings);
+        return true;
     }
 
     public LiveData<List<Meeting>> getMeetingsLiveData() {
@@ -66,4 +76,6 @@ public class MeetingRepository {
 
         meetingsLiveData.setValue(meetings);
     }
+
+
 }

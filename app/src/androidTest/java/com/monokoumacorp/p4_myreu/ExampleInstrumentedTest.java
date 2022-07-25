@@ -1,14 +1,25 @@
 package com.monokoumacorp.p4_myreu;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
+
+import com.monokoumacorp.p4_myreu.config.BuildConfigResolver;
+import com.monokoumacorp.p4_myreu.data.MeetingRepository;
+import com.monokoumacorp.p4_myreu.data.Participant;
+import com.monokoumacorp.p4_myreu.ui.ViewModelFactory;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -17,10 +28,12 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.monokoumacorp.p4_myreu", appContext.getPackageName());
     }
+
 }

@@ -11,4 +11,5 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="room_hint">Salle</string>
     <string name="lamzone_fr">\@lamzone.com</string>
+    <string name="create_meeting_error_message">Erreur</string>
 </resources>
